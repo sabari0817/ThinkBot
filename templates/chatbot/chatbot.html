@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat with ThinkBot{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg text-white p-6 mb-8">
+        <h1 class="text-3xl font-bold mb-2">Chat with ThinkBot</h1>
+        <p class="text-lg opacity-90">Your 24/7 mental health companion. Share your thoughts and feelings in a safe space.</p>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="bg-white rounded-lg shadow-lg">
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="h-[500px] overflow-y-auto p-6 space-y-4">
+            <!-- Welcome Message -->
+            <div class="flex items-start space-x-3">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                </div>
+                <div class="flex-grow">
+                    <div class="bg-gray-100 rounded-lg p-4 max-w-[80%]">
+                        <p class="text-gray-800">Hello! I'm ThinkBot, your mental health companion. How are you feeling today?</p>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">ThinkBot</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Responses -->
+        <div class="p-4 border-t border-gray-200">
+            <div class="mb-3">
+                <h3 class="text-sm font-medium text-gray-600 mb-2">Quick responses:</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                        I'm feeling anxious
+                    </button>
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                        I need someone to talk to
+                    </button>
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                        How can I manage stress?
+                    </button>
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                        I'm feeling down
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input -->
+        <div class="p-4 border-t border-gray-200">
+            <form id="chat-form" class="flex space-x-4">
+                {% csrf_token %}
+                <input type="text" id="message-input" 
+                    class="flex-grow rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    placeholder="Type your message here...">
+                <button type="submit" 
+                    class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">Important Notice</h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                    <p>ThinkBot is an AI companion designed to provide support and guidance. However, it is not a substitute for professional health care. If you're experiencing a crisis or need immediate help, please contact emergency services or a health professional.</p>
+                    <p class="mt-2">Emergency Contacts:</p>
+                    <ul class="list-disc list-inside mt-1">
+                        <li>Emergency Services: 102</li>
+                        <li>Crisis Helpline: 112</li>
+                        <li>National Suicide Prevention Lifeline: 1-800-273-8255</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('message-input');
+    const quickResponses = document.querySelectorAll('.quick-response');
+
+    // Function to add a message to the chat
+    function addMessage(message, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'flex items-start space-x-3' + (isUser ? ' justify-end' : '');
+        
+        const avatar = isUser ? 
+            `<div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                <i class="fas fa-user text-white"></i>
+            </div>` :
+            `<div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                <i class="fas fa-robot text-white"></i>
+            </div>`;
+
+        messageDiv.innerHTML = `
+            ${isUser ? '' : `<div class="flex-shrink-0">${avatar}</div>`}
+            <div class="flex-grow">
+                <div class="bg-${isUser ? 'indigo-500 text-white' : 'gray-100 text-gray-800'} rounded-lg p-4 max-w-[80%] ${isUser ? 'ml-auto' : ''}">
+                    <p>${message}</p>
+                </div>
+                <div class="text-xs text-gray-500 mt-1 ${isUser ? 'text-right' : ''}">${isUser ? 'You' : 'MentiBot'}</div>
+            </div>
+            ${isUser ? `<div class="flex-shrink-0">${avatar}</div>` : ''}
+        `;
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Handle form submission
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, true);
+        messageInput.value = '';
+
+        // Send message to server
+        const formData = new FormData();
+        formData.append('message', message);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+        fetch('{% url "chatbot_response" %}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Add bot response
+            addMessage(data.message);
+        });
+    });
+
+    // Handle quick responses
+    quickResponses.forEach(button => {
+        button.addEventListener('click', function() {
+            messageInput.value = this.textContent.trim();
+            messageInput.focus();
+        });
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}
