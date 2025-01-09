@@ -36,13 +36,20 @@
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="{% url 'index' %}" class="hover:text-indigo-200 px-3 py-2 rounded-md">Home</a>
                     <a href="{% url 'mood_tracker' %}" class="hover:text-indigo-200 px-3 py-2 rounded-md">Mood Tracker</a>
-                    <a href="{% url 'chatbot' %}" class="hover:text-indigo-200 px-3 py-2 rounded-md">Chatbot</a>
                     <a href="{% url 'stress_management' %}" class="hover:text-indigo-200 px-3 py-2 rounded-md">Stress Management</a>
                     <a href="{% url 'predict_disease' %}" class="hover:text-indigo-200 px-3 py-2 rounded-md">Disease Prediction</a> <!-- New Link -->
+                    <a href="{% url 'group_chat' %}" class="hover:underline">Chatroom</a>
                     <div class="relative" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false">
                         <button @click="open = !open" 
                                 class="flex items-center space-x-1 hover:text-indigo-200 px-3 py-2 rounded-md"
                                 :class="{ 'bg-indigo-700': open }">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="Profile Picture" class="w-14 h-14 rounded-full object-cover border-4 border-white">
+                            {% else %}
+                <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white">
+                    <i class="fas fa-user text-4xl text-gray-400"></i>
+                </div>
+            {% endif %}    
                             <span>{{ user.username }}</span>
                             <i class="fas fa-chevron-down text-xs" :class="{ 'transform rotate-180': open }"></i>
                         </button>
@@ -83,7 +90,6 @@
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="{% url 'index' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Home</a>
                 <a href="{% url 'mood_tracker' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Mood Tracker</a>
-                <a href="{% url 'chatbot' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Chatbot</a>
                 <a href="{% url 'stress_management' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Stress Management</a>
                 <a href="{% url 'predict_disease' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Disease Prediction</a> <!-- New Link -->
                 <a href="{% url 'profile' %}" class="block px-3 py-2 rounded-md hover:bg-indigo-500">Profile</a>
@@ -107,6 +113,28 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 py-8">
         {% block content %}{% endblock %}
+        <!-- Chatbot Sidebar -->
+        {% if user.is_authenticated %}
+        <div id="chatbot-sidebar" class="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 hidden">
+           <div class="absolute right-0 w-[40rem] bg-white h-full shadow-lg">
+               <div class="flex justify-between items-center p-4 border-b">
+                   <h2 class="text-lg font-bold">Chat with ThinkBot</h2>
+                   <button id="close-chatbot" class="text-gray-500 hover:text-gray-700">
+                       <i class="fas fa-times"></i>
+                   </button>
+               </div>
+               <div class="p-4">
+                   <!-- Include the chatbot content here -->
+                   {% include 'chatbot/chatbot.html' %}
+               </div>
+           </div>
+       </div>
+       
+       <!-- Button to Open Chatbot -->
+       <button id="open-chatbot" class="fixed bottom-4 right-4 bg-indigo-600 text-white p-3 rounded-full shadow-lg">
+           <i class="fas fa-comments"></i>
+       </button>
+       {% endif %}
     </main>
     <footer class="bg-gray-800 text-white py-8 mt-auto">
         <div class="max-w-7xl mx-auto px-4">
@@ -145,6 +173,13 @@
         document.querySelector('.mobile-menu-button').addEventListener('click', function() {
             document.querySelector('.mobile-menu').classList.toggle('hidden');
         });
+        document.getElementById('open-chatbot').addEventListener('click', function() {
+                document.getElementById('chatbot-sidebar').classList.remove('hidden');
+            });
+        
+        document.getElementById('close-chatbot').addEventListener('click', function() {
+                document.getElementById('chatbot-sidebar').classList.add('hidden');
+            });
     </script>
     {% block extra_js %}{% endblock %}
 </body>

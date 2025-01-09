@@ -1,11 +1,7 @@
-{% extends 'base.html' %}
-
-{% block title %}Chat with ThinkBot{% endblock %}
-
 {% block content %}
-<div class="max-w-4xl mx-auto">
+<div class="max-w-3xl mx-auto">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg text-white p-6 mb-8">
+    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg text-white p-3 mb-8">
         <h1 class="text-3xl font-bold mb-2">Chat with ThinkBot</h1>
         <p class="text-lg opacity-90">Your 24/7 mental health companion. Share your thoughts and feelings in a safe space.</p>
     </div>
@@ -13,7 +9,7 @@
     <!-- Chat Interface -->
     <div class="bg-white rounded-lg shadow-lg">
         <!-- Chat Messages -->
-        <div id="chat-messages" class="h-[500px] overflow-y-auto p-6 space-y-4">
+        <div id="chat-messages" class="h-[220px] overflow-y-auto p-6 space-y-4">
             <!-- Welcome Message -->
             <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
@@ -31,20 +27,20 @@
         </div>
 
         <!-- Quick Responses -->
-        <div class="p-4 border-t border-gray-200">
-            <div class="mb-3">
+        <div class="p-1 border-t border-gray-200">
+            <div class="mb-2">
                 <h3 class="text-sm font-medium text-gray-600 mb-2">Quick responses:</h3>
-                <div class="flex flex-wrap gap-2">
-                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                <div class="flex flex-wrap gap-1">
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-all ease-in-out duration-300">
                         I'm feeling anxious
                     </button>
-                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-all ease-in-out duration-300">
                         I need someone to talk to
                     </button>
-                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-all ease-in-out duration-300">
                         How can I manage stress?
                     </button>
-                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-colors">
+                    <button class="quick-response bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm transition-all ease-in-out duration-300">
                         I'm feeling down
                     </button>
                 </div>
@@ -100,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addMessage(message, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'flex items-start space-x-3' + (isUser ? ' justify-end' : '');
-        
+
         const avatar = isUser ? 
             `<div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
                 <i class="fas fa-user text-white"></i>
@@ -115,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="bg-${isUser ? 'indigo-500 text-white' : 'gray-100 text-gray-800'} rounded-lg p-4 max-w-[80%] ${isUser ? 'ml-auto' : ''}">
                     <p>${message}</p>
                 </div>
-                <div class="text-xs text-gray-500 mt-1 ${isUser ? 'text-right' : ''}">${isUser ? 'You' : 'MentiBot'}</div>
+                <div class="text-xs text-gray-500 mt-1 ${isUser ? 'text-right' : ''}">${isUser ? 'You' : 'ThinkBot'}</div>
             </div>
             ${isUser ? `<div class="flex-shrink-0">${avatar}</div>` : ''}
         `;
@@ -134,6 +130,9 @@ document.addEventListener('DOMContentLoaded', function() {
         addMessage(message, true);
         messageInput.value = '';
 
+        // Simulate typing delay for bot response
+        addMessage("ThinkBot is typing...", false);
+
         // Send message to server
         const formData = new FormData();
         formData.append('message', message);
@@ -146,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             // Add bot response
+            chatMessages.lastElementChild.querySelector('p').textContent = data.message;
             addMessage(data.message);
         });
     });

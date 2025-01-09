@@ -7,7 +7,8 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.16.26.234']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +21,18 @@ INSTALLED_APPS = [
     'mood.apps.MoodConfig',
     'chatbot',
     'stress',
+    'channels',
+    'chat', 
 ]
+ASGI_APPLICATION = 'mentibot.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

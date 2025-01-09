@@ -35,3 +35,12 @@ def save_user_profile(sender, instance, **kwargs):
 def ready():
     post_save.connect(create_user_profile, sender=User)
     post_save.connect(save_user_profile, sender=User)
+
+class BPRecord(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bp_records")
+    date = models.DateField()
+    systolic = models.PositiveIntegerField()
+    diastolic = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"
