@@ -26,7 +26,7 @@
                 <input type="hidden" name="next" value="{{ next }}">
 
                 <div>
-                    <label for="id_username" class="block text-sm font-medium text-gray-1000">Username</label>
+                    <label for="id_username" class="block text-sm font-medium text-gray-1000">Email</label>
                     <div class="mt-1">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -34,7 +34,7 @@
                             </div>
                             <input id="id_username" name="username" type="text" required
                                 class="form-input pl-10"
-                                placeholder="Enter your username">
+                                placeholder="Enter your Email ID">
                         </div>
                     </div>
                 </div>
@@ -50,6 +50,10 @@
                                 class="form-input pl-10"
                                 placeholder="Enter your password">
                         </div>
+                    </div>
+                </div>
+                    <div class="mt-2 text-right">
+                        <a href="{% url 'password_reset' %}" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                     </div>
                 </div>
 
@@ -70,7 +74,7 @@
                     </div>
                 </div>
                 {% endif %}
-
+                
                 <div>
                     <button type="submit" class="btn-primary w-full flex justify-center items-center">
                         <i class="fas fa-sign-in-alt mr-2"></i>

@@ -20,6 +20,14 @@
         </div>
     </div>
 
+    <!-- Quote of the Day -->
+    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 mt-6 text-center">
+        <div class="text-2xl italic text-indigo-700 mb-2">"{{ quote }}"</div>
+        {% if author %}
+        <div class="text-indigo-400 font-semibold">- {{ author }}</div>
+        {% endif %}
+    </div>
+
     <!-- Features Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Mood Tracking -->

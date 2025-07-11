@@ -6,6 +6,11 @@ from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User
 from .models import Profile
 
+import requests
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -60,17 +65,19 @@ def profile(request):
     return render(request, 'accounts/profile.html', context)
 
 def index(request):
-    return render(request, 'index.html')
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import BPRecordForm
-from .models import BPRecord
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
-
+    # Fetch a new quote every time the page is loaded
+    quote = "Stay positive and keep moving forward."  # fallback quote
+    author = ""
+    try:
+        response = requests.get("https://zenquotes.io/api/random", timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            if isinstance(data, list) and len(data) > 0:
+                quote = data[0].get("q", quote)
+                author = data[0].get("a", "")
+    except Exception as e:
+        print("API error:", e)
+    return render(request, 'index.html', {"quote": quote, "author": author})
 @login_required
 def record_bp(request):
     if request.method == "POST":

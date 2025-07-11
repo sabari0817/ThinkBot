@@ -146,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             // Add bot response
             chatMessages.lastElementChild.querySelector('p').textContent = data.message;
-            addMessage(data.message);
         });
     });
 

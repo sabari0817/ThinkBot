@@ -1,13 +1,20 @@
 from pathlib import Path
 import os
 
+# filepath: e:\intern task\Ieee-project-Django\mentibot\settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ranjithtechvision@gmail.com'
+EMAIL_HOST_PASSWORD = 'kuly nxqh srxl lqof'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.16.26.234']
 
 INSTALLED_APPS = [
@@ -24,6 +31,7 @@ INSTALLED_APPS = [
     'channels',
     'chat', 
 ]
+
 ASGI_APPLICATION = 'mentibot.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
@@ -77,6 +85,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -84,6 +93,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+# filepath: e:\intern task\Ieee-project-Django\mentibot\settings.py
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',  # your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # keep default for admin
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -102,3 +116,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Security: Use secure cookies in production
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
