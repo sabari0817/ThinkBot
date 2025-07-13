@@ -18,7 +18,16 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    'loving-spontaneity-production-ec16.up.railway.app',
+    '127.0.0.1',
+    'localhost',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://loving-spontaneity-production-ec16.up.railway.app'
+]
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
