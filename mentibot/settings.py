@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 
+
+
+
 # filepath: e:\intern task\Ieee-project-Django\mentibot\settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -15,7 +18,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.16.26.234']
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -120,3 +123,4 @@ LOGOUT_REDIRECT_URL = 'login'
 # Security: Use secure cookies in production
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
