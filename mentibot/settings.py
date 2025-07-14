@@ -137,3 +137,4 @@ CSRF_COOKIE_SECURE = True
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+CSRF_FAILURE_VIEW = 'accounts.views.csrf_failure'

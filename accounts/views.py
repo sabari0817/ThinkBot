@@ -5,11 +5,18 @@ from django.contrib import messages
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.http import HttpResponseForbidden
+
+
+
 
 import requests
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+
+def csrf_failure(request, reason=""):
+    return HttpResponseForbidden(f'CSRF error: {reason}')
 
 def register(request):
     if request.method == 'POST':
