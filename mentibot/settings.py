@@ -24,8 +24,10 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://loving-spontaneity-production-ec16.up.railway.app'
+    'https://loving-spontaneity-production-ec16.up.railway.app',
 ]
+               
+
 
 
 
@@ -130,6 +132,8 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Security: Use secure cookies in production
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
