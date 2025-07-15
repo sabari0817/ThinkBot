@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import logging
 
 
 
@@ -19,12 +20,12 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'loving-spontaneity-production-ec16.up.railway.app/',
+    'loving-spontaneity-production-ec16.up.railway.app',
     '127.0.0.1',
     'localhost',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "https://loving-spontaneity-production-ec16.up.railway.app",
+    'https://loving-spontaneity-production-ec16.up.railway.app',
     
 ]
                
@@ -136,6 +137,29 @@ LOGOUT_REDIRECT_URL = 'login'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+CSRF_COOKIE_DOMAIN = "loving-spontaneity-production-ec16.up.railway.app"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CSRF_FAILURE_VIEW = 'accounts.views.csrf_failure'
+
+logger = logging.getLogger("django.security.csrf")
+
+MIDDLEWARE += [
+    'django.middleware.csrf.CsrfViewMiddleware',
+]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.security.csrf': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
