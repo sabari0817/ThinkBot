@@ -24,10 +24,9 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://loving-spontaneity-production-ec16.up.railway.app',
-
+    "https://*.railway.app",
 ]
-               
+             
 
 
 
