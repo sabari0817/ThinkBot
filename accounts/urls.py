@@ -1,9 +1,14 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
+from accounts import views  # or wherever your view is
+
+
+
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('test/', views.test, name='test'),
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),

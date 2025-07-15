@@ -14,6 +14,13 @@ import requests
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+@csrf_exempt
+def test(request):
+    return HttpResponse("It works!")
+
 
 def csrf_failure(request, reason=""):
     return HttpResponseForbidden(f'CSRF error: {reason}')
