@@ -6,7 +6,7 @@ from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User
 from .models import Profile
 from django.http import HttpResponseForbidden
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -18,6 +18,7 @@ import base64
 def csrf_failure(request, reason=""):
     return HttpResponseForbidden(f'CSRF error: {reason}')
 
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
